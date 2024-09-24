@@ -76,17 +76,11 @@ pipeline {
 
         stage('Build Docker Image & Tag') {
             steps {
-               sh "docker build -t rahulgupta9794/boardgame:latest"
+               sh "docker build -t rahulgupta9794/boardgame:latest ."
             }
         }
 
-        stage('Push Tagged Image') {
-            steps {
-               withDockerRegistry(credentialsId: 'dockerhub-cred') {
-                    sh "docker push rahulgupta9794/boardgame:latest"
-                }
-            }
-        }
+        
 
 
     }
