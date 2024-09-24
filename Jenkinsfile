@@ -68,19 +68,19 @@ pipeline {
             }
         }
 
-        stage('Build') {
-            steps {
-               sh "mvn package"
-            }
-        }
-
         stage('Build Docker Image & Tag') {
             steps {
                sh "docker build -t rahulgupta9794/boardgame:latest ."
             }
         }
 
-        
+        stage('Push Tagged Image') {
+            steps {
+               withDockerRegistry(credentialsId: 'dockerhub-cred', toolName: 'docker') {
+                    sh "docker push rahulgupta9794/boardgame:latest"
+                }
+            }
+        }
 
 
     }
