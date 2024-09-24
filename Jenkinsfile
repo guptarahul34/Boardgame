@@ -45,5 +45,49 @@ pipeline {
                 }
             }
         }
+
+        stage('Quality Gate') {
+            steps {
+                script {
+                  waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token' 
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+               sh "mvn package"
+            }
+        }
+
+        stage('Publish To Nexus') {
+            steps {
+               withMaven(globalMavenSettingsConfig: 'global-settings', jdk: 'jdk17', maven: 'maven3', mavenSettingsConfig: '', traceability: true) {
+                    sh "mvn deploy"
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+               sh "mvn package"
+            }
+        }
+
+        stage('Build Docker Image & Tag') {
+            steps {
+               sh "docker build -t rahulgupta9794/boardgame:latest"
+            }
+        }
+
+        stage('Push Tagged Image') {
+            steps {
+               withDockerRegistry(credentialsId: 'dockerhub-cred', toolName: 'docker') {
+                    // some block
+                }
+            }
+        }
+
+
     }
 }
