@@ -7,6 +7,7 @@ pipeline {
     }
 
     environment {
+        DOCKER_HUB=credentials('dockerhub')
         SCANNER_HOME= tool 'sonar-scanner'
     }
 
@@ -76,9 +77,10 @@ pipeline {
 
         stage('Push Tagged Image') {
             steps {
-               withDockerRegistry(credentialsId: 'dockerhub-cred', url: 'https://hub.docker.com/repositories/rahulgupta9794') {
-                    sh "docker push rahulgupta9794/boardgame:latest"
-                }
+               // withDockerRegistry(credentialsId: 'dockerhub-cred', url: 'https://hub.docker.com/repositories/rahulgupta9794') {
+                sh "echo $DOCKER_HUB_PSW | docker login -u $DOCKER_HUB_USR --password-stdin "  
+                sh "docker push rahulgupta9794/boardgame:latest"
+                // }
             }
         }
 
