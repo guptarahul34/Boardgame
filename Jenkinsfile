@@ -76,7 +76,7 @@ pipeline {
 
         stage('Push Tagged Image') {
             steps {
-               withDockerRegistry(credentialsId: 'dockerhub-cred', toolName: 'docker') {
+               withDockerRegistry(credentialsId: 'dockerhub-cred') {
                     sh "docker push rahulgupta9794/boardgame:latest"
                 }
             }
