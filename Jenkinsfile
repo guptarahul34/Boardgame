@@ -83,7 +83,7 @@ pipeline {
         stage('Push Tagged Image') {
             steps {
                withDockerRegistry(credentialsId: 'dockerhub-cred', toolName: 'docker') {
-                    // some block
+                    sh "docker push rahulgupta9794/boardgame:latest"
                 }
             }
         }
